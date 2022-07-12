@@ -61,7 +61,7 @@ Experimenting with feature sets and models with cross validation to see what wor
 - `ALL` using all generated features.
 ### Models
 `RandomForest`, `ExtraTrees`, `XGBoost`, and `LightGBM`
-### Experiment: 
+### Experiment
 A combination of a feature set and model.
 ### Cross Validation
 Using `RepeatedStratifiedKFold` with `5` folds and `6` repeats (each repeat splits folds with different randomization)  
