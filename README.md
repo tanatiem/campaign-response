@@ -21,6 +21,8 @@ For example, for all the customers who start visiting our business in `2011-05` 
 
 You might notice that starting from `2012-10` cohort. The transaction data that we have doesn't look natural. It may be provided not as a whole but just some parts of it.
 
+---
+
 ## Feature Engineering
 Even if we only have `transaction amount`, we can aggregate it in many ways.
 ### RFM Features
@@ -39,11 +41,45 @@ Even if we only have `transaction amount`, we can aggregate it in many ways.
 - `Avg. TTE` : Average of the duration between each transaction.
 - `SD. TTE` : Standard deviation of the duration between each tranaction.
 - `CV. TTE` : Avg.TTE / SD.TTE
-### Past-X-Year Featrues
+### Past-X-Year Features
 - `{feature}_1y` : All of the features above but using only past one year transactions to aggregate.
 - `{feature}_2y` : All of the features above but using only past two year transactions to aggregate.
 
+## Mutual Information
+With `sklearn.feature_selection.mutual_info_classif`, we can get the mutual information score for each feature in order to estimate the prediction power for our classification problem. We then try to select features based on these values.  
 
+![image](https://user-images.githubusercontent.com/11977931/178439149-49d4bec4-dec3-43bf-8231-46740221a1c2.png)
+
+---
+
+## Model Experiments
+Experimenting with feature sets and models with cross validation to see what works.
+### Feature sets
+- `RFM` only basic Recency, Frequency, Monetary. Because RFM is the most basic form of features, let's treat this as a baseline.
+- `LTD` refers to the Feature Engineer section, this covers RFM, Additional-to-RFM, Time-to-Event features, not including Past-X-Year features. These features are generated using the whole transaction data for each customer, regardless of how old it is. They are Life-to-Date information.
+- `SET1` includes almost all features but only some features with small Mutual Information score are dropped.
+- `ALL` using all generated features.
+### Models
+`RandomForest`, `ExtraTrees`, `XGBoost`, and `LightGBM`
+### Experiment: 
+A combination of a feature set and model.
+### Cross Validation
+Using `RepeatedStratifiedKFold` with `5` folds and `6` repeats (each repeat splits folds with different randomization)  
+We then get `30` of training and validation scores for each experiment.
+
+---
 
 ## Cross Validation Result
+
+- `RFM` feature set yield much worst result. (Of course, it's only 3 features)
+- `LTD` feature set has more features than RFM. Life-To-Date features such as monetary or frequency are generated using the whole data. This improves the performance a bit from RFM set.
+- Seeing that `SET1` and `ALL` feature sets have much better performance means that the features generated using data from past 1 year, and 2 years are a big help.
+- This demonstrates the power of `Feature Engineering`. Even though, we only have `transaction amount` data, but with different aggregation techniques, we can raise our model performance.
+
+
+![image](https://user-images.githubusercontent.com/11977931/178443423-789f2c74-d754-42d6-80f4-7ebd7b69731a.png)
+
 ![result](https://user-images.githubusercontent.com/11977931/178422443-2f78c03b-188e-4424-b56a-fb963b529e6d.png)
+
+We now know that `XGBosst` and `LightGBM` work quite well on this data
+We may shortlist `XGBoost` and `LightGBM` for further steps like, Hyperparameter tuning, or experimenting with resampling techniques such as under-sampling, over-sampling, or SMOTE, etc.
