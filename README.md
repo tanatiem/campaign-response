@@ -13,7 +13,7 @@ Predict whether or not a customer responds to the marketing campaign.
 ![Data](https://user-images.githubusercontent.com/11977931/178426327-7a235d1f-594c-4c56-a1cb-9bcde402eb64.png)
 
 ## Cohort Analysis
-As a part of exploratory data analysis, for this particular transactional data, we can make a Cohort Chart like this below picture.  
+As a part of exploratory data analysis, we can make the Cohort Chart from our transaction data like this below picture.  
 We group customer together based on their first transaction month as in the same cohort. Starting from the cohort month (Y axis), for each passing month (X axis), you can see the numbers. These numbers represent the `Retention Rate` for each cohort and month.  
 
 For example, for all the customers who start visiting our business in `2011-05` (Cohort 2011-05), at the `3rd` month after their first visits, there are `37%` of customers from this cohort come back and purchase again.
@@ -23,6 +23,25 @@ You might notice that starting from `2012-10` cohort. The transaction data that 
 
 ## Feature Engineering
 Even if we only have `transaction amount`, we can aggregate it in many ways.
+### RFM Features
+- `Recency` : Duration (number of days) from the last transaction to the campaign date.
+- `Frequency` : Number of visits or count of transactions.
+- `Monetary` : Total spend or sum of transaction amounts.
+### Additional to RFM
+- `Tenure` : Duration (number of days) from the first transaction to the campaign date.
+- `Length of Stay` : Duration (number of days) from the first to last transactions.
+- `Ticket Size` : Average spend per visit.
+- `SD of Ticket Size` : Standard deviation of spend. This captures the behavior of spending amounts being consistent or fluctuated.
+- `CV of Ticket Size` : Coefficient of variation of spend. Basically $\frac{\sigma}{\mu}$ of spending.
+- `Average Spend per Month` : Total spend / number of months visited.
+- `Average Visit per Month` : Total visit / number of months visited.
+### Time to Event
+- `Avg. TTE` : Average of the duration between each transaction.
+- `SD. TTE` : Standard deviation of the duration between each tranaction.
+- `CV. TTE` : Avg.TTE / SD.TTE
+### Past-X-Year Featrues
+- `{feature}_1y` : All of the features above but using only past one year transactions to aggregate.
+- `{feature}_2y` : All of the features above but using only past two year transactions to aggregate.
 
 
 
