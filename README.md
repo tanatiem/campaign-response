@@ -38,9 +38,9 @@ Even if we only have `transaction amount`, we can aggregate it in many ways.
 - `Average Spend per Month` : Total spend / number of months visited.
 - `Average Visit per Month` : Total visit / number of months visited.
 ### Time to Event
-- `Avg. TTE` : Average of the duration between each transaction.
-- `SD. TTE` : Standard deviation of the duration between each tranaction.
-- `CV. TTE` : Avg.TTE / SD.TTE
+- `Avg.TTE` : Average of the duration between each transaction.
+- `SD.TTE` : Standard deviation of the duration between each tranaction.
+- `CV.TTE` : SD.TTE / Avg.TTE
 ### Past-X-Year Features
 - `{feature}_1y` : All of the features above but using only past one year transactions to aggregate.
 - `{feature}_2y` : All of the features above but using only past two year transactions to aggregate.
@@ -70,16 +70,21 @@ We then get `30` of training and validation scores for each experiment.
 ---
 
 ## Cross Validation Result
-
-- `RFM` feature set yield much worst result. (Of course, it's only 3 features)
-- `LTD` feature set has more features than RFM. Life-To-Date features such as monetary or frequency are generated using the whole data. This improves the performance a bit from RFM set.
-- Seeing that `SET1` and `ALL` feature sets have much better performance means that the features generated using data from past 1 year, and 2 years are a big help.
-- This demonstrates the power of `Feature Engineering`. Even though, we only have `transaction amount` data, but with different aggregation techniques, we can raise our model performance.
-
+- `XGBoost` and `LightGBM` seems to work well.
+- `RFM` feature set yield poor results. (Of course, it's only 3 features)
+- `LTD` feature set has more additional features from RFM. But they all are generated using all transactions. This improves the performance a bit from the RFM set.
+- Seeing that `SET1` and `ALL` feature sets have much better performance, this means that the features generated using data from past 1 year, and 2 years are a big help.
+- This demonstrates the power of `Feature Engineering`. Even though, we only have `transaction amount` data, we can raise our model performance with different aggregation techniques.
 
 ![image](https://user-images.githubusercontent.com/11977931/178443423-789f2c74-d754-42d6-80f4-7ebd7b69731a.png)
 
 ![result](https://user-images.githubusercontent.com/11977931/178422443-2f78c03b-188e-4424-b56a-fb963b529e6d.png)
 
-We now know that `XGBosst` and `LightGBM` work quite well on this data
-We may shortlist `XGBoost` and `LightGBM` for further steps like, Hyperparameter tuning, or experimenting with resampling techniques such as under-sampling, over-sampling, or SMOTE, etc.
+## Future improvements
+- We now have a shortlist of our model selection so that we can work on Hyperparameter tuning later.
+- Experimenting with resampling techniques to address imbalance problem, such as, under-sampling, over-sampling, SMOTE, etc.
+- More feature engineering.
+
+Thanks!
+
+
