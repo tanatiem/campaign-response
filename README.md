@@ -10,7 +10,7 @@ Predict whether or not a customer responds to the marketing campaign.
 - `Retail_Data_Response.csv` contanis customer response. This is our label.
 - Using `pandas` to aggregate and transform transactional data to the customer grain or Customer Single View to be used as training samples for fitting the model.
 
-![Data](https://user-images.githubusercontent.com/11977931/178426327-7a235d1f-594c-4c56-a1cb-9bcde402eb64.png)
+![Data](https://user-images.githubusercontent.com/11977931/178889405-bae9dc94-c630-4bc6-aea5-5d51524e3620.png)
 
 ## Cohort Analysis
 As a part of exploratory data analysis, we can make the Cohort Chart from our transaction data like this below picture.  
@@ -76,7 +76,7 @@ We then get `30` of training and validation scores for each experiment.
 - Seeing that `SET1` and `ALL` feature sets have much better performance, this means that the features generated using data from past 1 year, and 2 years are a big help.
 - This demonstrates the power of `Feature Engineering`. Even though, we only have `transaction amount` data, we can raise our model performance with different aggregation techniques.
 
-![image](https://user-images.githubusercontent.com/11977931/178443423-789f2c74-d754-42d6-80f4-7ebd7b69731a.png)
+![image](https://user-images.githubusercontent.com/11977931/178889184-a6b3f217-519c-4dcd-8d15-574f8d4db63c.png)
 
 ![result](https://user-images.githubusercontent.com/11977931/178422443-2f78c03b-188e-4424-b56a-fb963b529e6d.png)
 
