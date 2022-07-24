@@ -61,37 +61,53 @@ Please note that MI scores are univariate. In some case, you may find that one f
 ---
 
 ## Model Experiments
-Experimenting with feature sets and models with cross validation to see what works.
-### Feature sets
-- `RFM` only basic Recency, Frequency, Monetary. Because RFM is the most basic form of features, let's treat this as a baseline.
-- `LTD` refers to the Feature Engineer section, this covers RFM, Additional-to-RFM, Time-to-Event features, not including Past-X-Year features. These features are generated using the whole transaction data for each customer, regardless of how old it is. They are Life-to-Date information.
-- `SET1` includes almost all features but only some features with small Mutual Information score are dropped.
-- `ALL` using all generated features.
-### Models
-`RandomForest`, `ExtraTrees`, `XGBoost`, and `LightGBM`
-### Experiment
-A combination of a feature set and model.
-### Cross Validation
-Using `RepeatedStratifiedKFold` with `5` folds and `6` repeats (each repeat splits folds with different randomization)  
-We then get `30` of training and validation scores for each experiment.
+Experimenting with feature sets and models with cross validation to see what works. We use `ROC-AUC` as our main metrics to evaluate model performance.
+
+### 1st Iteration
+- Feature sets: `ALL` features and `RFM` only to see if the additional features are helpful compared to only basic RFM features
+- Algorithms to try: `XGBoost`, `LightGBM`, `RandomForest`, and `ExtraTrees`
+
+![image](https://user-images.githubusercontent.com/11977931/180649915-eb997376-47d2-4ca6-9b50-a6ae7e469819.png)
+- As a result, additional features that we generated helps increasing model performance quite a lot. And we can shortlist the algorithms to use, `XGBoost` and `LightGBM`.
+
+### 2nd Iteration
+- Experiment with different feature sets
+  - `LTD` set (Life-to-Date) contains the features using all transactions to aggregate.
+  - `P1Y-ALL` and `P1Y-RFM` sets contain the features using only transactions from the past 1 year to date.
+  - `P2Y-ALL` and `P2Y-RFM` sets contain the features using only transactions from the past 2 years to date.
+  - `RFE-selector` set contains a list of features suggested by using `RFE` (Recursive Feature Elimination)
+  - `Hand Picked` set is manually selected based on different measures, such as, data visualization, MI scores, feature importance, correlations, etc.
+  
+![image](https://user-images.githubusercontent.com/11977931/180650662-ed401b95-42bc-45b3-9c25-f7aff6713d73.png)
+
+- Clearly, using data from Past-2-Years yeilds a better result than LTD and Past-1-Year.
+- A subset of features, such as, `P2Y-RFM`, `RFE-selector`, and `Hand Picked` seems to be a little better than using `ALL` features. But we can't tell at this point until we use a proper set of parameters, because we are currently using the same set of parameters for each feature sets. The suitable parameters for each feature set could be different. 
 
 ---
 
-## Cross Validation Result
-- `XGBoost` and `LightGBM` seems to work well.
-- `RFM` feature set yield poor results. (Of course, it's only 3 features)
-- `LTD` feature set has more additional features from RFM. But they all are generated using all transactions. This improves the performance a bit from the RFM set.
-- Seeing that `SET1` and `ALL` feature sets have much better performance, this means that the features generated using data from past 1 year, and 2 years are a big help.
-- This demonstrates the power of `Feature Engineering`. Even though, we only have `transaction amount` data, we can raise our model performance with different aggregation techniques.
+## Hyperparameter tuning
+`hyperparameter_tuning.ipynb` are put as an example code. There are a lot of plotly plots but it won't load if you view it from github, so you're not gonna see anything except the code. And even if you tried to run it, it wouldn't produce the same result.  
 
-![image](https://user-images.githubusercontent.com/11977931/178889184-a6b3f217-519c-4dcd-8d15-574f8d4db63c.png)
+I used `Optuna` for hyperparameter tuning. It's a pretty neat package as it's easy to use and it efficiently searches large spaces and prune unpromising trials for faster results. In this case, I use the mean of cross-validation AUC scores as the objective function to maximize.
 
-![result](https://user-images.githubusercontent.com/11977931/178422443-2f78c03b-188e-4424-b56a-fb963b529e6d.png)
+As you can see from the picture below. The best cross-validation AUC is 0.80379 at the 295th trial of all 500 trials.
+![image](https://user-images.githubusercontent.com/11977931/180652417-df9d275a-744b-4873-a78f-106281e4c3d3.png)
 
-## Future improvements
-- We now have a shortlist of our model selection so that we can work on Hyperparameter tuning later.
-- Experimenting with resampling techniques to address imbalance problem, such as, under-sampling, over-sampling, SMOTE, etc.
-- More feature engineering.
+It's also customizable. For each trial, I can customize the tuning result to store additional values such as Standard Deviation of validation scores.  
+Then I can make a plot as below, in order to check how varied is the validation scores comparing to other trials.  
+![image](https://user-images.githubusercontent.com/11977931/180652013-3392530d-967d-4b6d-828e-81c5e31478fa.png)
+
+One great thing about Optuna is this `Slice Plot`, with this you can narrow your search spaces and try again. This can improve the result.
+![image](https://user-images.githubusercontent.com/11977931/180652928-f24309b4-c4c1-4f96-9787-3837ddc0ef47.png)
+
+After experimenting with different sets of features, using scaling or not, and resampling such as oversampling and SMOTE. I came up with two choices of models, one for `XGBoost`, another for `LightGBM` with both using `hand-picked` feature set.
+
+---
+
+## Model Selection
+
+
+
 
 Thanks!
 
