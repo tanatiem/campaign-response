@@ -114,6 +114,8 @@ After experimenting with different sets of features, using scaling or not, and r
 ### Model Comparison
 ![compare](https://github.com/tanatiem/campaign-response/blob/main/images/model_comparison.png)
 
+Look at the `Cumulative Gain` chart, if you target only the top 3 deciles, you can gain `71.3%` of all responders. This seems to happen for both of the models.
+
 Since both model performance are similar in many aspects. So it comes down to Train & Test AUC which `Model #2` yields a higher result.  
 So `Model #2`, I choose you.
 
