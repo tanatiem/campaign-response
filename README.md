@@ -105,9 +105,17 @@ After experimenting with different sets of features, using scaling or not, and r
 ---
 
 ## Model Selection
+### Model #1 - XGBoost Performance
+![model1](https://github.com/tanatiem/campaign-response/blob/main/images/model1_report.png)
 
+### Model #2 - LightGBM Performance
+![model2](https://github.com/tanatiem/campaign-response/blob/main/images/model2_report.png)
 
+### Model Comparison
+![compare](https://github.com/tanatiem/campaign-response/blob/main/images/model_comparison.png)
 
+Since both model performance are similar in many aspects. So it comes down to Train & Test AUC which `Model #2` yields a higher result.  
+So `Model #2`, I choose you.
 
 Thanks!
 
