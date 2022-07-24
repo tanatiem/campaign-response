@@ -1,9 +1,15 @@
 # Campaign Response Prediction
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tanatiem/campaign-response/blob/main/notebooks/campaign_response_prediction.ipynb)
+## Overview
 
 **Task:** Binary Classification  
 Predict whether or not a customer responds to the marketing campaign.
+
+| Notebook | Description | 
+| --- | --- |
+| campaign_response_prediction.ipynb <br/>[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tanatiem/campaign-response/blob/main/notebooks/campaign_response_prediction.ipynb) | Preprocessing the datasets, feature engineering, and experiments with different classification algorithms. | 
+| model_performance.ipynb <br/>[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tanatiem/campaign-response/blob/main/notebooks/model_performance.ipynb) | Training two models using XGBoost and LightGBM with the tuned hyperparameters. Generating model performance report and comparison. | 
+
 
 ## Datasets
 - `Retail_Data_Transactions.csv` contains customer transactions.
@@ -24,7 +30,7 @@ You might notice that starting from `2012-10` cohort. The transaction data that 
 ---
 
 ## Feature Engineering
-Even if we only have `transaction amount`, we can aggregate it in many ways.
+Even if we only have `transaction amount`, we can aggregate it in many ways to create predictors (features) using different concepts.
 ### RFM Features
 - `Recency` : Duration (number of days) from the last transaction to the campaign date.
 - `Frequency` : Number of visits or count of transactions.
@@ -48,7 +54,9 @@ Even if we only have `transaction amount`, we can aggregate it in many ways.
 ## Mutual Information
 With `sklearn.feature_selection.mutual_info_classif`, we can get the mutual information score for each feature in order to estimate the prediction power for our classification problem. We then try to select features based on these values.  
 
-![image](https://user-images.githubusercontent.com/11977931/178439149-49d4bec4-dec3-43bf-8231-46740221a1c2.png)
+![image](https://user-images.githubusercontent.com/11977931/178439149-49d4bec4-dec3-43bf-8231-46740221a1c2.png)  
+
+Please note that MI scores are univariate. In some case, you may find that one feature have a low MI score, but it is actually an important feature because of its interaction effect with other features. The MI score can not capture that, but it is still a great and quick measure with fitting the model.
 
 ---
 
