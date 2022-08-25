@@ -3,7 +3,7 @@
 ## Overview
 
 **Task:** Binary Classification  
-Predict whether or not a customer responds to the marketing campaign.
+Predict whether or not a customer will respond to a given marketing campaign.
 
 | Notebook | Description | 
 | --- | --- |
